@@ -7,7 +7,7 @@ class Usuario(db.Model):
     senha = db.Column(db.String(120), nullable=False)
     cpf = db.Column(db.String(14), nullable=True)
     pis = db.Column(db.String(14), nullable=True)
-    
+
     endereco = db.relationship('Endereco',
         uselist=False, back_populates='usuario', cascade="all, delete-orphan"
     )

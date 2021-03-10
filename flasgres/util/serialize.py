@@ -7,7 +7,9 @@ class AlchemyEncoder(json.JSONEncoder):
             # an SQLAlchemy class
             fields = {}
             def field_filter(_x):
-                return not _x.startswith('_') and not _x.startswith('query') and _x != 'metadata'
+                return not _x.startswith('_') and not _x.startswith('query') \
+                    and _x not in ['metadata', 'senha']
+
             for field in [x for x in dir(o) if field_filter(x)]:
                 data = o.__getattribute__(field)
                 try:
