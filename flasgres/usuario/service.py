@@ -25,10 +25,13 @@ def add_usuario(usuario_data):
     return usuario
 
 def update_usuario(usuario_id, usuario_data):
-    endereco_data = usuario_data.pop('endereco')
+    endereco_data = {}
+    if 'endereco' in usuario_data:
+        endereco_data = usuario_data.pop('endereco')
     Usuario.query.filter_by(id=usuario_id).update(usuario_data)
     usuario = Usuario.query.get(usuario_id)
-    Endereco.query.filter_by(id=usuario.endereco.id).update(endereco_data)
+    if endereco_data != {}:
+        Endereco.query.filter_by(id=usuario.endereco.id).update(endereco_data)
     db.session.commit()
     return usuario
 

@@ -29,12 +29,9 @@ class FlasgresFlask(Flask):
             return response
         return [self.register_error_handler(ex, error_handler) for ex in exceptions]
 
-def create_app(test_config=None):
+def create_app(config=None):
     app = FlasgresFlask(__name__)
-    app.config.from_object(os.environ['APP_SETTINGS'])
-
-    if test_config is not None:
-        app.config.from_mapping(test_config)
+    app.config.from_object(config or os.environ['APP_SETTINGS'])
 
     db.init_app(app)
     migrate.init_app(app, db)
