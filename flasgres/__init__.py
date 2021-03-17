@@ -1,6 +1,7 @@
 import os
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 from flask_migrate import Migrate
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from .util.serialize import AlchemyEncoder
@@ -32,6 +33,8 @@ class FlasgresFlask(Flask):
 def create_app(config=None):
     app = FlasgresFlask(__name__)
     app.config.from_object(config or os.environ['APP_SETTINGS'])
+
+    CORS(app, supports_credentials=True)
 
     db.init_app(app)
     migrate.init_app(app, db)

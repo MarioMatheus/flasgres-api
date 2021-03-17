@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import jwt
-from flask import current_app as app, make_response
+from flask import current_app as app
 from werkzeug.security import check_password_hash
 from flasgres.usuario import service
 from flasgres.util import exception
@@ -11,10 +11,9 @@ def authenticate(credentials):
         raise exception.AuthException()
 
     token = jwt.encode({
-        'username': credentials['login'],
+        'id': usuario.id,
+        'username': usuario.nome,
         'exp': datetime.now() + timedelta(hours=12)
     }, app.config['SECRET_KEY'])
 
-    response = make_response(usuario)
-    response.set_cookie('session', token)
-    return response
+    return usuario, token
