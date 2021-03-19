@@ -1,6 +1,7 @@
 from flasgres import db
+from flasgres.util.serialize import AlchemyJSON
 
-class Usuario(db.Model):
+class Usuario(db.Model, AlchemyJSON):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -15,7 +16,7 @@ class Usuario(db.Model):
     def __repr__(self):
         return '<Usuario %r>' % self.nome
 
-class Endereco(db.Model):
+class Endereco(db.Model, AlchemyJSON):
     id = db.Column(db.Integer, primary_key=True)
     cep = db.Column(db.String(9), nullable=False)
     rua = db.Column(db.String(255), nullable=False)
@@ -27,6 +28,12 @@ class Endereco(db.Model):
 
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id'))
     usuario = db.relationship('Usuario', back_populates='endereco')
+
+    def json(self, as_string=False):
+        endereco_json = super().json(as_string)
+        endereco_json.pop('usuario_id')
+        endereco_json.pop('usuario')
+        return endereco_json
 
     def __repr__(self):
         return '<Endereco %r, %r>' % (self.rua, self.numero)

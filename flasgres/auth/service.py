@@ -10,10 +10,13 @@ def authenticate(credentials):
     if not usuario or not check_password_hash(usuario.senha, credentials['senha']):
         raise exception.AuthException()
 
-    token = jwt.encode({
-        'id': usuario.id,
-        'username': usuario.nome,
-        'exp': datetime.now() + timedelta(hours=12)
-    }, app.config['SECRET_KEY'])
+    token = get_token_from(usuario)
 
     return usuario, token
+
+def get_token_from(usuario):
+    return jwt.encode({
+        'id': usuario.id,
+        'username': usuario.nome,
+        'exp': datetime.now() + timedelta(hours=24)
+    }, app.config['SECRET_KEY'])
