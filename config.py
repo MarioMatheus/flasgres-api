@@ -20,7 +20,7 @@ class TestingConfig(Config):
     SECRET_KEY = 'secret_test'
 
 class ProductionConfig(Config):
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL'] if 'DATABASE_URL' in os.environ else ''
+    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL'].replace('postgres://', 'postgresql://') if 'DATABASE_URL' in os.environ else ''
     SECRET_KEY = os.environ['SECRET_KEY'] if 'SECRET_KEY' in os.environ else ''
     AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN'] if 'AUTH0_DOMAIN' in os.environ else ''
     AUTH0_AUDIENCE = os.environ['AUTH0_AUDIENCE'] if 'AUTH0_AUDIENCE' in os.environ else ''
