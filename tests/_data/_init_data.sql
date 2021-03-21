@@ -1,6 +1,6 @@
 INSERT INTO public.usuario
-(id, nome, email, senha, cpf, pis)
-VALUES(1, 'Beltrano de Lá', 'beltranodela@example.com', 'pbkdf2:sha256:150000$9fTobSw6$da88df5c4b126c4a1b788ebcd92775a6ca66570883dc1932206428d0ad3073c4', '000.000.000-00', '000.00000.00-0');
+(id, nome, email, senha, cpf, pis, oauth)
+VALUES(1, 'Beltrano de Lá', 'beltranodela@example.com', 'pbkdf2:sha256:150000$9fTobSw6$da88df5c4b126c4a1b788ebcd92775a6ca66570883dc1932206428d0ad3073c4', '000.000.000-00', '000.00000.00-0', false);
 
 INSERT INTO public.endereco
 (cep, rua, numero, complemento, municipio, estado, pais, usuario_id)

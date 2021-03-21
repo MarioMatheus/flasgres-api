@@ -1,3 +1,4 @@
+import json
 from flasgres import db
 from flasgres.util.serialize import AlchemyJSON
 
@@ -5,13 +6,23 @@ class Usuario(db.Model, AlchemyJSON):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    senha = db.Column(db.String(120), nullable=False)
+    senha = db.Column(db.String(120), nullable=True)
     cpf = db.Column(db.String(14), nullable=True)
     pis = db.Column(db.String(14), nullable=True)
+    oauth = db.Column(db.Boolean, nullable=False, default=False, server_default="false")
 
     endereco = db.relationship('Endereco',
         uselist=False, back_populates='usuario', cascade="all, delete-orphan"
     )
+
+    def json(self, as_string=False):
+        usuario_json = super().json(as_string=False)
+        # pylint: disable=no-member
+        endereco_json = self.endereco.json(as_string=False)
+        usuario_json['endereco'] = endereco_json
+        if as_string:
+            return json.dumps(usuario_json)
+        return usuario_json
 
     def __repr__(self):
         return '<Usuario %r>' % self.nome

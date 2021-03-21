@@ -4,20 +4,25 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_migrate import Migrate
 from sqlalchemy.ext.declarative import DeclarativeMeta
-from .util.serialize import AlchemyEncoder
-from .util.exception import AuthException
+from .util.serialize import AlchemyEncoder, AlchemyJSON
+from .util.exception import AuthException, BusinessException
 
 db = SQLAlchemy()
 migrate = Migrate()
 
 class FlasgresFlask(Flask):
-    json_encoder = AlchemyEncoder
+    # json_encoder = AlchemyEncoder
 
     def make_response(self, rv):
-        if isinstance(rv.__class__, DeclarativeMeta) or isinstance(rv, list):
-            new_rv = jsonify(rv)
-        elif isinstance(rv, tuple) and isinstance(rv[1], int):
-            new_rv = jsonify(rv[0]), rv[1]
+        def is_sql_model(_e):
+            return issubclass(_e.__class__, AlchemyJSON)
+        if is_sql_model(rv):
+            new_rv = rv.json()
+        elif isinstance(rv, tuple) and issubclass(rv[0].__class__, AlchemyJSON) and isinstance(rv[1], int):
+            new_rv = rv[0].json(), rv[1]
+        elif isinstance(rv, list):
+            _list = list(map(lambda e: e.json() if is_sql_model(e) else e, rv))
+            new_rv = jsonify(_list)
         else:
             new_rv = rv
 
@@ -39,7 +44,7 @@ def create_app(config=None):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    app.register_default_exceptions(AuthException)
+    app.register_default_exceptions(AuthException, BusinessException)
 
     from .controller import root_bp
     app.register_blueprint(root_bp)

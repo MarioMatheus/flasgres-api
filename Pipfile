@@ -11,6 +11,7 @@ psycopg2 = "*"
 flask-migrate = "*"
 pyjwt = "*"
 flask-cors = "*"
+python-jose = "*"
 
 [dev-packages]
 pylint = "*"

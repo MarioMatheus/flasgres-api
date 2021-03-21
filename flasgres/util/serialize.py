@@ -29,6 +29,6 @@ class AlchemyEncoder(json.JSONEncoder):
             return fields
 
         if isinstance(o, list):
-            return [json.dumps(e, cls=AlchemyEncoder) for e in o]
+            return [json.loads(json.dumps(e, cls=AlchemyEncoder)) for e in o]
 
         return json.JSONEncoder.default(self, o)

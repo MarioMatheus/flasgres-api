@@ -1,4 +1,4 @@
-from sqlalchemy import or_
+from sqlalchemy import or_, and_, sql
 from werkzeug.security import generate_password_hash
 from .model import db, Usuario, Endereco
 
@@ -15,10 +15,17 @@ def get_usuario_by_login(login):
         Usuario.pis == login,
     )).first()
 
+def get_usuario_ext(email):
+    return Usuario.query.filter(and_(
+        Usuario.email == email,
+        Usuario.oauth == sql.expression.true()
+    )).first()
+
 def add_usuario(usuario_data):
     endereco = Endereco(**usuario_data['endereco'])
     usuario_data['endereco'] = endereco
-    usuario_data['senha'] = generate_password_hash(usuario_data['senha'])
+    if 'senha' in usuario_data:
+        usuario_data['senha'] = generate_password_hash(usuario_data['senha'])
     usuario = Usuario(**usuario_data)
     db.session.add(usuario)
     db.session.commit()

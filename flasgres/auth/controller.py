@@ -1,5 +1,5 @@
-from flask import Blueprint, request, make_response
 from datetime import timedelta
+from flask import Blueprint, request, make_response
 from . import service
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
