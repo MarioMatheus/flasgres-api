@@ -36,7 +36,7 @@ class FlasgresFlask(Flask):
         return [self.register_error_handler(ex, error_handler) for ex in exceptions]
 
 def create_app(config=None):
-    app = FlasgresFlask(__name__)
+    app = FlasgresFlask(__name__, instance_relative_config=True)
     app.config.from_object(config or os.environ['APP_SETTINGS'])
 
     CORS(app, supports_credentials=True)

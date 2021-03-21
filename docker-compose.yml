@@ -1,0 +1,46 @@
+version: "3"
+services:
+  web:
+    build:
+      context: ../flasgres-ui
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment: 
+      API_URL: http://api:5000
+    networks:
+      - web
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - "db"
+    env_file:
+      - .env
+    networks:
+      - webapi
+      - web
+
+  db:
+    image: postgres:10.1-alpine
+    container_name: db
+    environment:
+      POSTGRES_DB: flasgres
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - webapi
+
+networks:
+  webapi:
+    driver: bridge
+  web:
+    driver: bridge

@@ -7,11 +7,12 @@ name = "pypi"
 flask = "*"
 python-dotenv = "*"
 flask-sqlalchemy = "*"
-psycopg2 = "*"
 flask-migrate = "*"
 pyjwt = "*"
 flask-cors = "*"
 python-jose = "*"
+psycopg2 = "*"
+uwsgi = "*"
 
 [dev-packages]
 pylint = "*"
