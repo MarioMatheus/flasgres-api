@@ -30,7 +30,7 @@ def add_usuario():
     response = make_response(user_json(usuario), 201)
     if not usuario_data['oauth']:
         token = auth_service.get_token_from(usuario)
-        response.set_cookie('session', token, max_age=timedelta(hours=24))
+        response.set_cookie('session', token, max_age=timedelta(hours=24), samesite='None', secure=True)
     return response
 
 @usuario_bp.route('/<int:usuario_id>', methods=['GET', 'PUT', 'DELETE'])
