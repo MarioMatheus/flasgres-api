@@ -1,4 +1,3 @@
-from datetime import timedelta
 from flask import Blueprint, request, make_response
 from . import service
 
@@ -8,5 +7,5 @@ auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 def login():
     usuario, token = service.authenticate(request.json)
     response = make_response(usuario)
-    response.set_cookie('session', token, max_age=timedelta(hours=24), samesite='None', secure=True)
+    response.set_cookie('session', token, **service.get_cookie_options())
     return response

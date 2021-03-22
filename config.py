@@ -7,6 +7,7 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 class DevelopmentConfig(Config):
+    APP_ENV = 'dev'
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL'] if 'DATABASE_URL' in os.environ else ''
     SECRET_KEY = os.environ['SECRET_KEY'] if 'SECRET_KEY' in os.environ else ''
@@ -15,11 +16,13 @@ class DevelopmentConfig(Config):
     AUTH0_ALGORITHM = os.environ['AUTH0_ALGORITHM'] if 'AUTH0_ALGORITHM' in os.environ else ''
 
 class TestingConfig(Config):
+    APP_ENV = 'test' 
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@127.0.0.1:5432/flasgres_test'
     SECRET_KEY = 'secret_test'
 
 class ProductionConfig(Config):
+    APP_ENV = 'production'
     SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL'].replace('postgres://', 'postgresql://') if 'DATABASE_URL' in os.environ else ''
     SECRET_KEY = os.environ['SECRET_KEY'] if 'SECRET_KEY' in os.environ else ''
     AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN'] if 'AUTH0_DOMAIN' in os.environ else ''

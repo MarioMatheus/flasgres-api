@@ -1,4 +1,3 @@
-from datetime import timedelta
 from flask import Blueprint, request, make_response
 from flasgres.auth import auth_required, service as auth_service
 from flasgres.util.exception import BusinessException
@@ -30,7 +29,7 @@ def add_usuario():
     response = make_response(user_json(usuario), 201)
     if not usuario_data['oauth']:
         token = auth_service.get_token_from(usuario)
-        response.set_cookie('session', token, max_age=timedelta(hours=24), samesite='None', secure=True)
+        response.set_cookie('session', token, **auth_service.get_cookie_options())
     return response
 
 @usuario_bp.route('/<int:usuario_id>', methods=['GET', 'PUT', 'DELETE'])

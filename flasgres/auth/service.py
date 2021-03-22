@@ -22,3 +22,10 @@ def get_token_from(usuario):
         'username': usuario.nome,
         'exp': datetime.now() + timedelta(hours=24)
     }, app.config['SECRET_KEY'])
+
+def get_cookie_options():
+    return dict(
+        max_age=timedelta(hours=24),
+        samesite='None' if app.config['APP_ENV'] == 'production' else None,
+        secure=True if app.config['APP_ENV'] == 'production' else None,
+    )
