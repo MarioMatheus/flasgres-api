@@ -1,5 +1,8 @@
 import os
 
+def get_env(key, default=''):
+    return os.environ[key] if key in os.environ else default
+
 class Config:
     DEBUG = False
     TESTING = False
@@ -9,22 +12,22 @@ class Config:
 class DevelopmentConfig(Config):
     APP_ENV = 'dev'
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL'] if 'DATABASE_URL' in os.environ else ''
-    SECRET_KEY = os.environ['SECRET_KEY'] if 'SECRET_KEY' in os.environ else ''
-    AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN'] if 'AUTH0_DOMAIN' in os.environ else ''
-    AUTH0_AUDIENCE = os.environ['AUTH0_AUDIENCE'] if 'AUTH0_AUDIENCE' in os.environ else ''
-    AUTH0_ALGORITHM = os.environ['AUTH0_ALGORITHM'] if 'AUTH0_ALGORITHM' in os.environ else ''
+    SQLALCHEMY_DATABASE_URI = get_env('DATABASE_URL')
+    SECRET_KEY = get_env('SECRET_KEY')
+    AUTH0_DOMAIN = get_env('AUTH0_DOMAIN')
+    AUTH0_AUDIENCE = get_env('AUTH0_AUDIENCE')
+    AUTH0_ALGORITHM = get_env('AUTH0_ALGORITHM')
 
 class TestingConfig(Config):
-    APP_ENV = 'test' 
+    APP_ENV = 'test'
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@127.0.0.1:5432/flasgres_test'
+    SQLALCHEMY_DATABASE_URI = get_env('DATABASE_URL')
     SECRET_KEY = 'secret_test'
 
 class ProductionConfig(Config):
     APP_ENV = 'production'
-    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL'].replace('postgres://', 'postgresql://') if 'DATABASE_URL' in os.environ else ''
-    SECRET_KEY = os.environ['SECRET_KEY'] if 'SECRET_KEY' in os.environ else ''
-    AUTH0_DOMAIN = os.environ['AUTH0_DOMAIN'] if 'AUTH0_DOMAIN' in os.environ else ''
-    AUTH0_AUDIENCE = os.environ['AUTH0_AUDIENCE'] if 'AUTH0_AUDIENCE' in os.environ else ''
-    AUTH0_ALGORITHM = os.environ['AUTH0_ALGORITHM'] if 'AUTH0_ALGORITHM' in os.environ else ''
+    SQLALCHEMY_DATABASE_URI = get_env('DATABASE_URL').replace('postgres://', 'postgresql://')
+    SECRET_KEY = get_env('SECRET_KEY')
+    AUTH0_DOMAIN = get_env('AUTH0_DOMAIN')
+    AUTH0_AUDIENCE = get_env('AUTH0_AUDIENCE')
+    AUTH0_ALGORITHM = get_env('AUTH0_ALGORITHM')

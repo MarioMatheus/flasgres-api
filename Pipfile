@@ -13,6 +13,7 @@ flask-cors = "*"
 python-jose = "*"
 psycopg2 = "*"
 uwsgi = "*"
+pytest-dotenv = "*"
 
 [dev-packages]
 pylint = "*"

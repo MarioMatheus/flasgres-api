@@ -13,3 +13,4 @@ db/
 
 .vscode/
 .env
+.env.test
