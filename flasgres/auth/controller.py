@@ -8,5 +8,5 @@ auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 def login():
     usuario, token = service.authenticate(request.json)
     response = make_response(usuario)
-    response.set_cookie('session', token, max_age=timedelta(hours=24), samesite='None', secure=True, domain='https://flasgres-ui.netlify.app')
+    response.set_cookie('session', token, max_age=timedelta(hours=24), samesite='None', secure=True)
     return response
