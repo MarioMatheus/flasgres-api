@@ -11,14 +11,13 @@ db = SQLAlchemy()
 migrate = Migrate()
 
 class FlasgresFlask(Flask):
-    # json_encoder = AlchemyEncoder
-
     def make_response(self, rv):
         def is_sql_model(_e):
             return issubclass(_e.__class__, AlchemyJSON)
+
         if is_sql_model(rv):
             new_rv = rv.json()
-        elif isinstance(rv, tuple) and issubclass(rv[0].__class__, AlchemyJSON) and isinstance(rv[1], int):
+        elif isinstance(rv, tuple) and is_sql_model(rv[0]) and isinstance(rv[1], int):
             new_rv = rv[0].json(), rv[1]
         elif isinstance(rv, list):
             _list = list(map(lambda e: e.json() if is_sql_model(e) else e, rv))
